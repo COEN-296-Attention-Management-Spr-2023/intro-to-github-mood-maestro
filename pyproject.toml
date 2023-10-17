@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "mood-maestro"
+version = "0.0.1"
+description = "COEN174 project for organizing music"
+license = "MIT"
+authors = [
+    "Vincent Zhou <vzhou408@gmail.com>",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiohttp = "^3.8.6"
+aiolimiter = "^1.1.0"
+environ-config = "^23.2.0"
+quart = "^0.19.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
