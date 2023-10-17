@@ -1,5 +1,6 @@
 import asyncio
 from datetime import datetime
+import select
 import urllib.parse
 
 import aiohttp
@@ -7,6 +8,7 @@ from aiolimiter import AsyncLimiter
 from quart import Quart, redirect, request, jsonify, session, render_template, url_for
 
 from config import cfg
+import db
 
 
 app = Quart(__name__)
@@ -86,6 +88,20 @@ async def refresh_token():
         return redirect("/playlists")
 
 
+async def get_song_features(song_id,headers):
+    async with aiohttp.ClientSession() as cs:
+        url = f"{API_BASE_URL}audio-features/{song_id}" 
+        async with (
+            limiter,
+            cs.get(url, headers = headers) as response,
+            db.async_session() as db_session, 
+        ):
+            data = await response.json()
+            song = (await session.execute(select(db.SongData).filter_by(id=song_id))).scalar_one()
+            song.features = data
+            await session.commit()
+             
+
 async def get_song_genres(song, headers):
     async with aiohttp.ClientSession() as cs:
         track_info = song["track"]
@@ -130,12 +146,20 @@ async def get_liked_songs():
                 songs.extend(data.get("items", []))
                 url = data.get("next")
 
-        songs_genres = await asyncio.gather(
-            *[get_song_genres(song, headers) for song in songs]
-        )
+        async with db.async_session() as db_session:
+            for song in songs:
+                song = db.SongData(id=song["track"]["id"], artists= song["track"]["artists"])
+                db_session.add(song)
+            
 
-        for song, genres in zip(songs, songs_genres):
-            song["artist_genres"] = genres
+            await db_session.commit()
+
+        # songs_genres = await asyncio.gather(
+        #     *[get_song_genres(song, headers) for song in songs]
+        # )
+
+        # for song, genres in zip(songs, songs_genres):
+        #     song["artist_genres"] = genres
 
         return await render_template("liked_songs.html", liked_songs=songs)
 
