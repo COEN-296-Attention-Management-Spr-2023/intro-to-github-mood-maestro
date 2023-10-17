@@ -86,6 +86,25 @@ async def refresh_token():
         return redirect("/playlists")
 
 
+async def get_song_genres(song, headers):
+    async with aiohttp.ClientSession() as cs:
+        track_info = song["track"]
+        artists_info = track_info["artists"]
+
+        artist_genres = []
+        for artist in artists_info:
+            url = f"{API_BASE_URL}artists/{artist['id']}"
+
+            async with (
+                limiter,
+                cs.get(url, headers=headers) as response,
+            ):
+                data = await response.json()
+                artist_genres.extend(data.get("genres", []))
+
+        return artist_genres
+
+
 @app.route("/liked_songs")
 async def get_liked_songs():
     if "access_token" not in session:
@@ -111,22 +130,12 @@ async def get_liked_songs():
                 songs.extend(data.get("items", []))
                 url = data.get("next")
 
-        for song in songs:
-            track_info = song["track"]
-            artists_info = track_info["artists"]
+        songs_genres = await asyncio.gather(
+            *[get_song_genres(song, headers) for song in songs]
+        )
 
-            artist_genres = []
-            for artist in artists_info:
-                url = f"{API_BASE_URL}artists/{artist['id']}"
-
-                async with (
-                    limiter,
-                    cs.get(url, headers=headers) as response,
-                ):
-                    data = await response.json()
-                    artist_genres.extend(data.get("genres", []))
-
-            song["artist_genres"] = artist_genres
+        for song, genres in zip(songs, songs_genres):
+            song["artist_genres"] = genres
 
         return await render_template("liked_songs.html", liked_songs=songs)
 
