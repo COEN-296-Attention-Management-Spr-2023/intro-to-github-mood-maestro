@@ -1,6 +1,6 @@
 import os
 
-from sqlalchemy import Boolean, Column, Float, Integer, JSON, String
+from sqlalchemy import Boolean, Column, Float, Integer, JSON, String, update
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import  declarative_base, sessionmaker
@@ -20,6 +20,13 @@ class SongData(Base):
     genres = Column(JSON, default = None)
     features = Column(JSON, default = None)
     
+
+class Playlist(Base):
+    __tablename__ = "playlist"
+    id = Column(String, primary_key = True)
+    owner = Column(String)
+    data = Column(JSON, default = "{}")
+
 
 if __name__ == "__main__":
 
