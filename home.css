@@ -28,8 +28,10 @@ nav.mainnav > ul > li + li {
 }
 
 nav.mainnav > ul > li > h1 {
-    font-size: 8vh;
+    line-height: 8vh;
+    font-size: 9vh;
     margin: 0;
+    font-weight: 800;
     color: black;
 }
 
@@ -72,6 +74,7 @@ main {
     padding: 0;
     overflow: hidden;
     padding-right: 5vh;
+    background-color: #000000;
 }
 main > ul {
     display: flex;
@@ -85,8 +88,8 @@ main > ul {
 main > ul > li > h2 {
     margin-top: 10vh;
     margin-bottom: 0;
-    color: black;
-    font-weight: 900;
+    color: white;
+    font-weight: 500;
     font-size: 9vh;
 }
 
