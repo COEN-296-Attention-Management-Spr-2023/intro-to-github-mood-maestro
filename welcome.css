@@ -10,7 +10,11 @@ body {
     justify-content: center;
     background-color: #000000;
 }
-
+.logo{
+    border-radius: 50%;
+    height: 30vh;
+    
+}
 h1 {
     font-size: 10vh;
     margin: 0;
