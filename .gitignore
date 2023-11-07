@@ -1,0 +1,4 @@
+__pycache__/**
+poetry.lock
+secrets.ini
+data.db

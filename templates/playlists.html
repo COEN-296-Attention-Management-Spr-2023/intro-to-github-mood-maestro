@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spotify Playlists</title>
+</head>
+<body>
+    <h1>Your Spotify Playlists</h1>
+    <ul>
+        {% for playlist in playlists %}
+        <li>
+            <h2>{{ playlist['name'] }}</h2>
+            <img src="{{ playlist['image'] }}" alt="{{ playlist['name'] }} Cover Image" width="200">
+            <h3>Tracks:</h3>
+            <ul>
+                {% for track in playlist['tracks'] %}
+                <li>
+                    <h3>{{ track['name'] }}</h3>
+                    <p>Artists: {{ ', '.join(track['artists']) }}</p>
+                    <p>Danceability: {{ track['danceability'] }}</p>
+                    <p>Energy: {{ track['energy'] }}</p>
+                    <p>Tempo: {{ track['tempo'] }}</p>
+                    <p>Valence: {{ track['valence'] }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+
+
+
+
+
