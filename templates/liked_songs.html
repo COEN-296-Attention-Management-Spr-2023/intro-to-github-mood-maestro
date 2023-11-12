@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='liked_  songs.css') }}">
     <title>Liked Songs</title>
+    <!-- <link rel="icon" type="image/png" href="./MoodMaestroLogo-green.jpg" border: 50%;/>  not working with python atm, need to look up favicon -->
 </head>
 <body>
-    <h1>Your Liked Songs</h1>
+    <h1 class="section_title">Your Liked Songs</h1>
     <ul>
         {% for song in liked_songs %}
         <li>
-            <h2>{{ song['track']['name'] }}</h2>
-            <p>Artists:
+            <h2 class="song_name">{{ song['track']['name'] }}</h2>
+            <p class="artists">Artists:
                 {% for artist in song['track']['artists'] %}
                 {{ artist['name'] }}{% if not loop.last %}, {% endif %}
                 {% endfor %}
             </p>
-            <p>Album: {{ song['track']['album']['name'] }}</p>
-            <p>Genres: {{ song['artist_genres'] }}</p>
-            <p>Danceability: {{ song['danceability'] }}</p>
-            <p>Energy: {{ song['energy'] }}</p>
-            <p>Tempo: {{ song['tempo'] }}</p>
-            <p>Valence: {{ song['valence'] }}</p>
+            <p class="album">Album: {{ song['track']['album']['name'] }}</p>
+            <p class="song_data">Genres: {{ song['artist_genres'] }}</p>
+            <p class="song_data">Danceability: {{ song['danceability'] }}</p>
+            <p class="song_data">Energy: {{ song['energy'] }}</p>
+            <p class="song_data">Tempo: {{ song['tempo'] }}</p>
+            <p class="song_data">Valence: {{ song['valence'] }}</p>
 
         </li>
         {% endfor %}

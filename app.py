@@ -28,7 +28,9 @@ API_BASE_URL = "https://api.spotify.com/v1/"
 
 @app.route("/")
 async def index():
-    return "Welcome to Music Maestro <a href='/login'>Login with Spotify </a>"
+    # return "Welcome to Music Maestro <a href='/login'>Login with Spotify </a>"
+    # return redirect("/welcome.html")
+    return await render_template("welcome.html")
 
 
 @app.route("/login")
@@ -43,6 +45,11 @@ async def login():
     print(f"{request.url_root}callback")
 
     return redirect(f"{AUTH_URL}?{urllib.parse.urlencode(params)}")
+
+
+@app.route("/home")
+async def home():
+    return await render_template("home.html")
 
 
 @app.route("/callback")
@@ -77,8 +84,7 @@ async def callback():
                 data = await response.json()
                 session["spotify_id"] = data["id"]
 
-        return redirect("/playlists")
-
+        return redirect("/home")
 
 @app.route("/refresh-token")
 async def refresh_token():
@@ -100,7 +106,7 @@ async def refresh_token():
                 session["access_token"] = data["access_token"]
                 session["expires_at"] = datetime.now().timestamp() + data["expires_in"]
 
-        return redirect("/playlists")
+        return redirect("/home")
     
 @app.route("/create-playlist")
 async def create_playlist():
@@ -319,3 +325,4 @@ async def get_playlists():
             )
 
             return await render_template("playlists.html", playlists=info)
+

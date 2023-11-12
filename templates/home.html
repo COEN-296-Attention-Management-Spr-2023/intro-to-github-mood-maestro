@@ -1,9 +1,9 @@
 <!-- home page that navigates to other pages -->
 <!-- ./MoodMaestroLogo.jpg -->
 <head>
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <title>Mood Maestro Home</title>
-    <link rel="icon" type="image/png" href="./MoodMaestroLogo-green.jpg" border: 50%;/>
+    <!-- <link rel="icon" type="image/png" href="./MoodMaestroLogo-green.jpg" border: 50%;/>  not working with python atm, need to look up favicon -->
 </head>
 
 <nav class="mainnav">
@@ -11,7 +11,7 @@
         <!-- <li><img src="./MoodMaestroLogo-green.jpg" alt="Mood Maestro Logo" class="mainnavlogo"/></li> -->
         <!-- <li><h1>Mood Maestro</h1></li> -->
         <li><h1>Welcome</h1></li>
-        <!-- username -->>
+        <!-- username -->
         <!-- logout -->
     </ul>
 </nav>
@@ -25,7 +25,7 @@
             <li><h2>What do you wish to do?</h2></li>
             <li><button><a href="./create_playlist">Create Playlist</a></button></li>
             <li><button><a href="./playlists">Playlist Data</a></button></li>
-            <li><button><a href="./liked_songs">Song Data</a></button></li>
+            <li><button><a href="./liked_songs">Liked Song Data</a></button></li>
         </ul>
     </main>
 </body>
