@@ -110,39 +110,43 @@ async def refresh_token():
     
 @app.route("/create-playlist")
 async def create_playlist():
-    if "access_token" not in session:
-        return redirect("/login")
-    if datetime.now().timestamp() > session["expires_at"]:
-        return redirect("/refresh-token")
+    return await render_template("create_playlist.html")
 
-    async with (limiter, aiohttp.ClientSession() as cs, db.async_session() as db_session):
-        playlist_id = request.args.get("pid")
-        result = (await db_session.execute(select(db.Playlist).where(db.Playlist.id == playlist_id))).first()
-        playlist_data = json.loads(result[0].data)
-        url = f"{API_BASE_URL}users/{session['spotify_id']}/playlists"
-        headers = {
-            "Authorization": f"Bearer {session['access_token']}",
-            "Content-Type": "application/json"
-        }
-        body = {
-            "name": request.args.get("name", default="Mood Maestro Playlist"),
-            "description": request.args.get("description", default="Placeholder Description."),
-            "public": False,
-        }
-        async with (limiter, cs.post(url, headers=headers, json=body) as response):
-            data = await response.json()
-            playlist_id = data["id"]
+# @app.route("/generate-playlist")    # was create_playlist just changed for now so I could see the create_playlist page
+# async def generate_playlist():
+#     if "access_token" not in session:
+#         return redirect("/login")
+#     if datetime.now().timestamp() > session["expires_at"]:
+#         return redirect("/refresh-token")
 
-        url = f"{API_BASE_URL}playlists/{playlist_id}/tracks"
-        body = {
-            "uris": [f"spotify:track:{track_id}" for track_id in playlist_data],
-            "position": 0,
-        }
+#     async with (limiter, aiohttp.ClientSession() as cs, db.async_session() as db_session):
+#         playlist_id = request.args.get("pid")
+#         result = (await db_session.execute(select(db.Playlist).where(db.Playlist.id == playlist_id))).first()
+#         playlist_data = json.loads(result[0].data)
+#         url = f"{API_BASE_URL}users/{session['spotify_id']}/playlists"
+#         headers = {
+#             "Authorization": f"Bearer {session['access_token']}",
+#             "Content-Type": "application/json"
+#         }
+#         body = {
+#             "name": request.args.get("name", default="Mood Maestro Playlist"),
+#             "description": request.args.get("description", default="Placeholder Description."),
+#             "public": False,
+#         }
+#         async with (limiter, cs.post(url, headers=headers, json=body) as response):
+#             data = await response.json()
+#             playlist_id = data["id"]
 
-        async with (limiter, cs.post(url, headers=headers, json=body) as response):
-            # new_playlist_id = await response.json()
-            # print(new_playlist_id)
-            return ("Success")
+#         url = f"{API_BASE_URL}playlists/{playlist_id}/tracks"
+#         body = {
+#             "uris": [f"spotify:track:{track_id}" for track_id in playlist_data],
+#             "position": 0,
+#         }
+
+#         async with (limiter, cs.post(url, headers=headers, json=body) as response):
+#             # new_playlist_id = await response.json()
+#             # print(new_playlist_id)
+#             return ("Success")
 
 
 async def update_database_features(songs, headers):

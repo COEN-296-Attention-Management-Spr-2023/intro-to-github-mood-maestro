@@ -3,19 +3,19 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='playlists.css') }}">
     <title>Spotify Playlists</title>
-    <!-- <link rel="icon" type="image/png" href="./MoodMaestroLogo-green.jpg" border: 50%;/>  not working with python atm, need to look up favicon -->
+    <link rel="icon" type="image/png" href="../static/MoodMaestroLogo-green.jpg" border: 50%;/>
 </head>
 <body>
     <header>
         <h1 class="section_title">Your Spotify Playlists</h1>
         <nav class="header_nav">
-            <a href="./home">Home</a>
+            <a href="./home ">Home</a>
         </nav>
     </header>
     <main>
         <ul class="list_playlists">
             {% for playlist in playlists %}
-            <li>
+            <li class="list_playlists">
                 <div class="playlist_data">
                     <h2 class="playlist_name">Playlist: {{ playlist['name'] }}</h2>
                     <img src="{{ playlist['image'] }}" alt="{{ playlist['name'] }} Cover Image">
@@ -39,7 +39,7 @@
     </main>
     <footer>
         <nav class="footer_nav">
-            <a href="#">Top</a>
+            <button><a href="#">Top</a></button>
         </nav>
     </footer>
 </body>
