@@ -154,7 +154,7 @@ async def update_database_features(songs, headers):
         for song in songs:
             place = song["track"]["id"]
             result = (await db_session2.execute(select(db.SongData).where(db.SongData.id == place))).first()
-            if result.features is not None :
+            if result[0].features is not None :
                 continue
             feature_data = await get_song_features(song["track"]["id"], headers)
             statement = (
@@ -162,15 +162,15 @@ async def update_database_features(songs, headers):
                 .where(db.SongData.id == place)
                 .values(features=feature_data)
             )
-            async with db_session2.begin():
-                await db_session2.execute(statement)
+            await db_session2.execute(statement)
+            await db_session2.commit()
 
 async def update_database_genres(songs, headers):
     async with db.async_session() as db_session3:
         for song in songs:
             place = song["track"]["id"]
-            result = (await session.execute(select(db.SongData).where(db.SongData.id == place))).first()
-            if result.features is not None :
+            result = (await db_session3.execute(select(db.SongData).where(db.SongData.id == place))).first()
+            if result[0].genres is not None :
                 continue
             genre_data = await get_song_genres(song, headers)
             statement = (
@@ -178,8 +178,8 @@ async def update_database_genres(songs, headers):
                 .where(db.SongData.id == place)
                 .values(genres=genre_data)
             )
-            async with db_session3.begin():
-                await db_session3.execute(statement)
+            await db_session3.execute(statement)
+            await db_session3.commit()
 
 
 
@@ -198,7 +198,6 @@ async def get_song_genres(song, headers):
     async with aiohttp.ClientSession() as cs:
         track_info = song["track"]
         artists_info = track_info["artists"]
-
         artist_genres = []
         for artist in artists_info:
             url = f"{API_BASE_URL}artists/{artist['id']}"
@@ -241,16 +240,8 @@ async def get_liked_songs():
         playlist_songs = []
         for song in songs:
             playlist_songs.append(song["track"]["id"])
-            json_string = json.dumps(playlist_songs)
-
-
-        print(json_string)
 
         async with db.async_session() as db_session:
-            # for song in songs:
-            #     song = db.SongData(id=song["track"]["id"], artists= song["track"]["artists"])
-            #     db_session.add(song)
-            # await db_session.commit()
         
             stmt = sqlite_upsert(db.SongData).values(
                 [
