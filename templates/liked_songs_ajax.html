@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liked Songs</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Your Liked Songs</h1>
+    <ul id="songsList">
+        {% for song in liked_songs %}
+        <li id="song-{{ song['track']['id'] }}">
+            <h2>{{ song['track']['name'] }}</h2>
+            <p>Artists:
+                {% for artist in song['track']['artists'] %}
+                {{ artist['name'] }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p class="genres">Genres: ...</p>
+            <p class="danceability">Danceability: ...</p>
+            <p class="energy">Energy: ...</p>
+            <p class="tempo">Tempo: ...</p>
+            <p class="valence">Valence: ...</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

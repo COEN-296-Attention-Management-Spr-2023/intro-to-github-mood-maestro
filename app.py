@@ -248,7 +248,23 @@ async def get_liked_songs():
         asyncio.create_task(update_database_genres(songs, headers))
         asyncio.create_task(update_database_features(songs, headers))
          
-        return await render_template("liked_songs.html", liked_songs=songs)
+        return await render_template("liked_songs_ajax.html", liked_songs=songs)
+
+@app.route("/get_updated_songs")
+async def get_updated_songs():
+    async with db.async_session() as session:
+        result = await session.execute(select(db.SongData))
+
+        song_data = []
+        for row in result.scalars():
+            song_dict = {
+                'id': row.id,
+                'genres': row.genres,
+                'features': row.features
+            }
+            song_data.append(song_dict)
+
+    return jsonify(song_data)
 
 
 async def get_playlists_songs(user_token: str, playlist: dict) -> dict:
