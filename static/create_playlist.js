@@ -18,7 +18,10 @@
         maybe try to link to the created playlist in spotify (if there is time)
 */
 
-function createMoodCheckbox(mood) {
+const moods = [];
+const genres = [];
+
+function createMoodCheckbox(mood) { // NEED TO STILL 
     // create checkbox element
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -60,7 +63,10 @@ function createGenreCheckbox(genre) {
 
 // loop though available moods and create checkboxes
 function loopThroughMoods() {
+    // if no moods do nothing
+    // else set ul.mood_list p.NA to have "hidden" class
     // loop though moods from data base 
+    
         let mood = ;    // per mood from database make variable
         createMoodCheckbox(mood)
     // end loop
@@ -68,6 +74,8 @@ function loopThroughMoods() {
 
 // loop though available genres and create checkboxes
 function loopThroughGenres() {
+    // if no moods do nothing
+    // else set ul.genre_list p.NA to have "hidden" class
     // loop though genres from data base 
         let genre = ;    // per mood from database make variable
         createMoodCheckbox(genre)
@@ -77,32 +85,47 @@ function loopThroughGenres() {
 function checkMoodCheckboxes() {
     // for each
         // check if checked
-        // if checked add checkedbox label to array
+        // if checked add checkedbox label to moods[]
 }
 
 function checkGenreCheckboxes() {
     // for each
             // check if checked
-            // if checked add checkedbox label to array
+            // if checked add checkedbox label to genres[]
 }
 
 function checkOptionCheckboxes() {
-    // for all check if checked
-        // if one checked apply
-        // if two checked tell user to only use one or do both 
-    // return outcome
+    let outcome = 0;
+    // for each see if checked
+        // if both checked tell user to use one or do both versions
+            outcome = 1;
+        // if songs with a genre/mood checked 
+            outcome = 2;
+        // if songs with all genres/mood checked
+            outcome = 3;
+    return outcome
+}
+
+function createPlaylist() {
+    // pass though option, moods, genres
+    // create playlist
 }
 
 // Loop though and create all available checkboxes for Moods and Genres 
-loopThroughMoods();
-loopThroughGenres();
+// might not be needed as we can loop in the html file
+// loopThroughMoods();
+// loopThroughGenres();
 
 // Event Listener for Generate Playlist button
 const generateButton = document.querySelector('main button');
 generateButton.addEventListener('click', () =>{
     checkMoodCheckboxes();
     checkGenreCheckboxes();
+    
     var option = checkOptionCheckboxes();
-    createPlaylist(option);
-    // get link to playlist and open link on another page
+    if(option !== 0){
+        createPlaylist(option, moods, genres);
+        // get link to playlist and open link on another page
+    }
+    // output need to choose an potion or no nothing
 });
