@@ -108,9 +108,9 @@ async def refresh_token():
 
         return redirect("/home")
     
-@app.route("/create_playlist")
-async def create_playlist():
-    return await render_template("create_playlist.html")
+# @app.route("/create_playlist")
+# async def create_playlist():
+#     return await render_template("create_playlist.html")
 
 @app.route("/create-playlist")
 async def generate_playlist():
