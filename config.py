@@ -15,7 +15,7 @@ class Config:
     class Spotify:
         id = ini_secrets.secret(name="spotify_client_id")
         secret = ini_secrets.secret(name="spotify_secret")
-        rate_limit_tokens = 60
+        rate_limit_tokens = 170
         rate_limit_period = 60
 
     spotify = environ.group(Spotify)
