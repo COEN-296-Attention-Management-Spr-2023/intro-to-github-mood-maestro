@@ -18,7 +18,7 @@
             <ul class="mood_list">
                 <!-- generate list of moods -->
                 <p class="NA hidden">No Moods Available</p>
-                <ul class="song_mood">
+                <ul class="song_mood">  <!-- only remove "hidden" class if no genres -->
                     {% for song in liked_songs %}   <!-- need to change this to mood variable from database ml -->
                         <input type="checkbox" id="{{ song['artist_genres'] }}" name="mood" >{{ song['artist_genres'] }}</p>    <!-- need to change this to mood variable from database ml -->
                     {% endfor %}
@@ -29,15 +29,15 @@
             <h2>Genre</h2>
             <ul class="genre_list">
                 <!-- generate list of genres -->
-                <p class="NA hidden">No Genres Available</p>
+                <p class="NA hidden">No Genres Available</p>    <!-- only remove "hidden" class if no genres -->
                 <ul class="song_mood">
                     {% for song in liked_songs %}   <!-- need to change this to genre variable from database -->
-                        <input type="checkbox" id="{{ song['artist_genres'] }}" name="genre" >{{ song['artist_genres'] }}</p><!-- need to change this to genre variable from database -->
+                        <input type="checkbox" id="{{ song['artist_genres'] }}" name="genre" > Genres: {{  }}</p>   <!-- need to change this to genre variable from database -->
                     {% endfor %}
                 </ul>
             </ul>
         </ul>   
-        <button><a href="./create-playlist">Generate</a></button> <!-- generate playlist and maybe go to view of created playlist, https://open.spotify.com/playlist/{playlist_id}-->
+        <button><a href="./create-playlist">Generate</a></button>   <!-- generate playlist and maybe go to view of created playlist, https://open.spotify.com/playlist/{playlist_id}-->
     </main>
     <footer>
         <nav class="footer_nav">
