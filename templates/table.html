@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table with Songs and Artists</title>
+</head>
+<body>
+    <!-- Combined Form for Playlist Name and Selecting Songs -->
+    <form id="songsForm" method="post" action="/submit-form">
+        <!-- Input for playlist name -->
+        <label for="playlistName">Your Playlist Name:</label>
+        <input type="text" id="playlistName" name="playlistName">
+        <input type="submit" value="Submit">
+        
+        <!-- Table for selecting songs -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Artists</th>
+                    <th>Select</th> <!-- Checkbox column -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in data %}
+                <tr>
+                    <td>{{ song.name }}</td>
+                    <td>{{ song.artists | tojson }}</td> <!-- Assuming artists is a JSON field -->
+                    <td><input type="checkbox" name="selected_song" value="{{ song.id }}"></td> <!-- Use song ID here -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- JavaScript to handle form submission -->
+    <script>
+        document.getElementById('songsForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            var playlistName = document.getElementById('playlistName').value;
+            var checkedSongs = [];
+            var checkboxes = document.querySelectorAll('input[name="selected_song"]:checked');
+    
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkedSongs.push(checkboxes[i].value);
+            }
+    
+            if (checkedSongs.length > 0) {
+                
+                var data = {
+                    name: playlistName,
+                    songs: checkedSongs
+                };
+                
+    
+                // Send a POST request to the server with the data
+                try {
+                    console.log(data)
+                    var response = await fetch('/create-playlist2', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+    
+                    if (response.ok) {
+                        console.log("Playlist created successfully");
+                        var responseData = await response.json();
+                        console.log(responseData);  
+                    } else {
+                        console.error("Failed to create playlist");
+                    }
+                } catch (error) {
+                    console.error("Error during AJAX request:", error);
+                }
+            } else {
+                console.log("No songs selected");
+            }
+        });
+    </script>
+</body>
+</html>
