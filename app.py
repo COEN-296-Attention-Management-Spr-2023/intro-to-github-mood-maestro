@@ -28,7 +28,9 @@ API_BASE_URL = "https://api.spotify.com/v1/"
 
 @app.route("/")
 async def index():
-    return "Welcome to Music Maestro <a href='/login'>Login with Spotify </a>"
+    # return "Welcome to Music Maestro <a href='/login'>Login with Spotify </a>"
+    # return redirect("/welcome.html")
+    return await render_template("welcome.html")
 
 
 @app.route("/login")
@@ -43,6 +45,11 @@ async def login():
     print(f"{request.url_root}callback")
 
     return redirect(f"{AUTH_URL}?{urllib.parse.urlencode(params)}")
+
+
+@app.route("/home")
+async def home():
+    return await render_template("home.html")
 
 
 @app.route("/callback")
@@ -77,8 +84,7 @@ async def callback():
                 data = await response.json()
                 session["spotify_id"] = data["id"]
 
-        return redirect("/playlists")
-
+        return redirect("/home")
 
 @app.route("/refresh-token")
 async def refresh_token():
@@ -100,10 +106,8 @@ async def refresh_token():
                 session["access_token"] = data["access_token"]
                 session["expires_at"] = datetime.now().timestamp() + data["expires_in"]
 
-        return redirect("/playlists")
+        return redirect("/home")
     
-
-
 
 async def update_database_features(songs, headers):
     async with db.async_session() as db_session2:
@@ -283,41 +287,6 @@ async def create_playlist2():
         return jsonify({"message": "Playlist created", "playlist_id": playlist_id})
 
 
-# @app.route("/create-playlist")
-# async def create_playlist():
-#     if "access_token" not in session:
-#         return redirect("/login")
-#     if datetime.now().timestamp() > session["expires_at"]:
-#         return redirect("/refresh-token")
-
-#     async with (limiter, aiohttp.ClientSession() as cs, db.async_session() as db_session):
-#         playlist_id = request.args.get("pid")
-#         result = (await db_session.execute(select(db.Playlist).where(db.Playlist.id == playlist_id))).first()
-#         playlist_data = json.loads(result[0].data)
-#         url = f"{API_BASE_URL}users/{session['spotify_id']}/playlists"
-#         headers = {
-#             "Authorization": f"Bearer {session['access_token']}",
-#             "Content-Type": "application/json"
-#         }
-#         body = {
-#             "name": request.args.get("name", default="Mood Maestro Playlist"),
-#             "description": request.args.get("description", default="Placeholder Description."),
-#             "public": False,
-#         }
-#         async with (limiter, cs.post(url, headers=headers, json=body) as response):
-#             data = await response.json()
-#             playlist_id = data["id"]
-
-#         url = f"{API_BASE_URL}playlists/{playlist_id}/tracks"
-#         body = {
-#             "uris": [f"spotify:track:{track_id}" for track_id in playlist_data],
-#             "position": 0,
-#         }
-
-#         async with (limiter, cs.post(url, headers=headers, json=body) as response):
-#             return ("Success")
-
-
 async def get_playlists_songs(user_token: str, playlist: dict) -> dict:
     async with aiohttp.ClientSession() as cs:
         url = f"{API_BASE_URL}playlists/{playlist['id']}"
@@ -377,3 +346,4 @@ async def get_playlists():
             )
 
             return await render_template("playlists.html", playlists=info)
+
