@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='liked_songs.css') }}">
     <title>Liked Songs</title>
+    <link rel="icon" type="image/png" href="../static/MoodMaestroLogo-green.jpg" border: 50%;/>
 </head>
 <body>
-    <h1>Your Liked Songs</h1>
-    <ul>
-        {% for song in liked_songs %}
-        <li>
-            <h2>{{ song['track']['name'] }}</h2>
-            <p>Artists:
-                {% for artist in song['track']['artists'] %}
-                {{ artist['name'] }}{% if not loop.last %}, {% endif %}
-                {% endfor %}
-            </p>
-            <p>Album: {{  }}</p>
-            <p>Genres: {{ }}</p>
-            <p>Danceability: {{  }}</p>
-            <p>Energy: {{  }}</p>
-            <p>Tempo: {{ }}</p>
-            <p>Valence: {{  }}</p>
-
-        </li>
-        {% endfor %}
-    </ul>
+    <header>
+        <h1 class="section_title">Your Liked Songs</h1>
+        <nav class="header_nav">
+            <a href="./home ">Home</a>
+        </nav>
+    </header>
+    <main>
+        <ul class="list_songs">
+            {% for song in liked_songs %}
+            <li class="list_songs">
+                <h2 class="song_name">{{ song['track']['name'] }}</h2>
+                <p class="artists">Artists:
+                    {% for artist in song['track']['artists'] %}
+                    {{ artist['name'] }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p class="album">Album: {{  }}</p>
+                <p class="song_data">Genres: {{  }}</p>
+                <p class="song_data">Danceability: {{  }}</p>
+                <p class="song_data">Energy: {{  }}</p>
+                <p class="song_data">Tempo: {{  }}</p>
+                <p class="song_data">Valence: {{  }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+    <footer>
+        <nav class="footer_nav">
+            <button><a href="#">Top</a></button>
+        </nav>
+    </footer>
 </body>
 </html>

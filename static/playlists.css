@@ -1,0 +1,123 @@
+body {
+    background-color: #1ED760;
+    margin: 0;
+}
+
+main {
+    padding-top: 5vh;
+    background-color: #191414;
+}
+
+h1.section_title {
+    padding: 1rem;
+    color: #191414;
+}
+
+ul.list_playlists {
+    
+    list-style-type: none;
+    margin: 0;
+    padding-bottom: 5vh;
+    padding-left: 4vw;
+    padding-right: 4vw;
+}
+
+li.list_playlists {
+    list-style-type: none;
+    border: 2px solid #1ED760;
+    border-radius: 5px;
+    background-color: #191414;
+    max-width: 100vw;
+    margin-bottom: 5vh;
+}
+
+div.playlist_data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2.playlist_name {
+    color: #fff;
+}
+
+img{
+    width: 200px;
+}
+
+h3.tracks {
+    color: #fff;
+    padding-left: 5vh;
+}
+
+ul.list_tracks {
+    list-style-type: none;
+    /* border: 2px solid #1ED760; */
+    border-radius: 5px;
+    background-color: #191414;
+    max-width: 100vw;
+    padding: 0;
+}
+
+li.track {
+    background-color: #fff;
+    border: 2px solid #1ED760;
+    border-radius: 5px;
+    padding: 0.01rem 1rem 0.2rem 1rem;
+    margin: 2rem;
+}
+
+h3.track_name {
+    color: #333;
+    text-align: center;
+}
+
+p.artists {
+    color: #333;
+}
+
+p.track_data {
+    color: #191414;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+nav.header_nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1ED760;
+    padding: 2vh;
+}
+
+header > nav.header_nav > a {
+    text-decoration: none;
+    color: #191414;
+    font-weight: bolder;
+}
+
+nav.footer_nav {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2vh;
+    position: fixed;
+    bottom: 0;
+}
+
+nav.footer_nav > button {
+    padding: 0.5rem;
+    background-color: #1ED760;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+nav.footer_nav > button > a {
+    text-decoration: none;
+    color: #191414;
+    font-weight: bolder;
+    border: 2px solid #1ED760;
+}

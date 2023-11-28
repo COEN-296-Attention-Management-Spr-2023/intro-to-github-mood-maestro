@@ -1,30 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='playlists.css') }}">
     <title>Spotify Playlists</title>
+    <link rel="icon" type="image/png" href="../static/MoodMaestroLogo-green.jpg" border: 50%;/>
 </head>
 <body>
-    <h1>Your Spotify Playlists</h1>
-    <ul>
-        {% for playlist in playlists %}
-        <li>
-            <h2>{{ playlist['name'] }}</h2>
-            <img src="{{ playlist['image'] }}" alt="{{ playlist['name'] }} Cover Image" width="200">
-            <h3>Tracks:</h3>
-            <ul>
-                {% for track in playlist['tracks'] %}
-                <li>
-                    <h3>{{ track['name'] }}</h3>
-                    <p>Artists: {{ ', '.join(track['artists']) }}</p>
-                    <p>Danceability: {{ track['danceability'] }}</p>
-                    <p>Energy: {{ track['energy'] }}</p>
-                    <p>Tempo: {{ track['tempo'] }}</p>
-                    <p>Valence: {{ track['valence'] }}</p>
-                </li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% endfor %}
-    </ul>
+    <header>
+        <h1 class="section_title">Your Spotify Playlists</h1>
+        <nav class="header_nav">
+            <a href="./home ">Home</a>
+        </nav>
+    </header>
+    <main>
+        <ul class="list_playlists">
+            {% for playlist in playlists %}
+            <li class="list_playlists">
+                <div class="playlist_data">
+                    <h2 class="playlist_name">Playlist: {{ playlist['name'] }}</h2>
+                    <img src="{{ playlist['image'] }}" alt="{{ playlist['name'] }} Cover Image">
+                </div>
+                <h3 class="tracks">Tracks:</h3>
+                <ul class="list_tracks">
+                    {% for track in playlist['tracks'] %}
+                    <li class="track">
+                        <h3 class="track_name track_data">{{ track['name'] }}</h3>
+                        <p class="track_data">Artists: {{ ', '.join(track['artists']) }}</p>
+                        <p class="track_data">Danceability: {{ track['danceability'] }}</p>
+                        <p class="track_data">Energy: {{ track['energy'] }}</p>
+                        <p class="track_data">Tempo: {{ track['tempo'] }}</p>
+                        <p class="track_data">Valence: {{ track['valence'] }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+    <footer>
+        <nav class="footer_nav">
+            <button><a href="#">Top</a></button>
+        </nav>
+    </footer>
 </body>
 </html>

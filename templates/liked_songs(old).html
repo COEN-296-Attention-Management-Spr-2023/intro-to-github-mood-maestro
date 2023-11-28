@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liked Songs</title>
+</head>
+<body>
+    <h1>Your Liked Songs</h1>
+    <ul>
+        {% for song in liked_songs %}
+        <li>
+            <h2>{{ song['track']['name'] }}</h2>
+            <p>Artists:
+                {% for artist in song['track']['artists'] %}
+                {{ artist['name'] }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p>Album: {{ song['track']['album']['name'] }}</p>
+            <p>Genres: {{ song['artist_genres'] }}</p>
+            <p>Danceability: {{ song['danceability'] }}</p>
+            <p>Energy: {{ song['energy'] }}</p>
+            <p>Tempo: {{ song['tempo'] }}</p>
+            <p>Valence: {{ song['valence'] }}</p>
+
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

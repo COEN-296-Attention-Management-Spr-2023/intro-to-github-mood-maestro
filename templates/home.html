@@ -1,0 +1,31 @@
+<!-- home page that navigates to other pages -->
+<!-- ./MoodMaestroLogo.jpg -->
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <title>Mood Maestro Home</title>
+    <link rel="icon" type="image/png" href="../static/MoodMaestroLogo-green.jpg" border: 50%;/>
+</head>
+
+<nav class="mainnav">
+    <ul>
+        <!-- <li><img src="./MoodMaestroLogo-green.jpg" alt="Mood Maestro Logo" class="mainnavlogo"/></li> -->
+        <!-- <li><h1>Mood Maestro</h1></li> -->
+        <li><h1>Welcome</h1></li>
+        <!-- username -->
+        <!-- logout -->
+    </ul>
+</nav>
+
+<body>
+    <aside class="homeaside">
+        <img src="../static/MoodMaestroLogo-green.jpg" alt="Mood Maestro Logo" class="logo"/>
+    </aside>
+    <main>
+        <ul class="homedirects">
+            <li><h2>What do you wish to do?</h2></li>
+            <li><button><a href="./create_playlist">Create Playlist</a></button></li>
+            <li><button><a href="./playlists">Playlist Data</a></button></li>
+            <li><button><a href="./liked_songs">Liked Song Data</a></button></li>
+        </ul>
+    </main>
+</body>
