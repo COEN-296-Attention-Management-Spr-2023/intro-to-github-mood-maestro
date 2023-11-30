@@ -16,6 +16,7 @@ Base = declarative_base()
 class SongData(Base):
     __tablename__ = "song"
     id = Column(String, primary_key = True)
+    name = Column(String)
     artists = Column(JSON)
     genres = Column(JSON, default = None)
     features = Column(JSON, default = None)
