@@ -67,8 +67,8 @@ function loopThroughMoods() {
     // else set ul.mood_list p.NA to have "hidden" class
     // loop though moods from data base 
     
-        let mood = ;    // per mood from database make variable
-        createMoodCheckbox(mood)
+        // let mood = ;    // per mood from database make variable
+        // createMoodCheckbox(mood)
     // end loop
 }
 
@@ -77,8 +77,8 @@ function loopThroughGenres() {
     // if no moods do nothing
     // else set ul.genre_list p.NA to have "hidden" class
     // loop though genres from data base 
-        let genre = ;    // per mood from database make variable
-        createMoodCheckbox(genre)
+        // let genre = ;    // per mood from database make variable
+        // createMoodCheckbox(genre)
     // end loop
 }
 
@@ -94,22 +94,22 @@ function checkGenreCheckboxes() {
             // if checked add checkedbox label to genres[]
 }
 
-function checkOptionCheckboxes() {
-    let outcome = 0;
-    // for each see if checked
-        // if both checked tell user to use one or do both versions
-            outcome = 1;
-        // if songs with a genre/mood checked 
-            outcome = 2;
-        // if songs with all genres/mood checked
-            outcome = 3;
-    return outcome
-}
+// function checkOptionCheckboxes() {
+//     let outcome = 0;
+//     // for each see if checked
+//         // if both checked tell user to use one or do both versions
+//             outcome = 1;
+//         // if songs with a genre/mood checked 
+//             outcome = 2;
+//         // if songs with all genres/mood checked
+//             outcome = 3;
+//     return outcome
+// }
 
-function createPlaylist() {
-    // pass though option, moods, genres
-    // create playlist
-}
+// function createPlaylist() {
+//     // pass though option, moods, genres
+//     // create playlist
+// }
 
 // Loop though and create all available checkboxes for Moods and Genres 
 // might not be needed as we can loop in the html file
@@ -122,10 +122,10 @@ generateButton.addEventListener('click', () =>{
     checkMoodCheckboxes();
     checkGenreCheckboxes();
     
-    var option = checkOptionCheckboxes();
-    if(option !== 0){
-        createPlaylist(option, moods, genres);
-        // get link to playlist and open link on another page
-    }
+    // var option = checkOptionCheckboxes();
+    // if(option !== 0){
+    //     createPlaylist(option, moods, genres);
+    //     // get link to playlist and open link on another page
+    // }
     // output need to choose an potion or no nothing
 });

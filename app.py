@@ -107,7 +107,6 @@ async def refresh_token():
                 session["expires_at"] = datetime.now().timestamp() + data["expires_in"]
 
         return redirect("/home")
-    
 
 async def update_database_features(songs, headers):
     async with db.async_session() as db_session2:
