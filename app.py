@@ -299,6 +299,7 @@ async def handle_form_submission():
     return redirect(url_for('table'))
 
 @app.route("/create-playlist2", methods=["POST"])
+
 async def create_playlist2():
     if "access_token" not in session:
         return redirect("/login")

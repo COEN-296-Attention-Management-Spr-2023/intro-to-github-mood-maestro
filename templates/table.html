@@ -1,37 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
     <title>Table with Songs and Artists</title>
+    <link rel="icon" type="image/png" href="../static/MoodMaestroLogo-green.jpg" border: 50%;/>
 </head>
 <body>
-    <!-- Combined Form for Playlist Name and Selecting Songs -->
-    <form id="songsForm" method="post" action="/submit-form">
-        <!-- Input for playlist name -->
-        <label for="playlistName">Your Playlist Name:</label>
-        <input type="text" id="playlistName" name="playlistName">
-        <input type="submit" value="Submit">
-        
-        <!-- Table for selecting songs -->
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Artists</th>
-                    <th>Select</th> <!-- Checkbox column -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for song in data %}
-                <tr>
-                    <td>{{ song.name }}</td>
-                    <td>{{ song.artists | tojson }}</td> <!-- Assuming artists is a JSON field -->
-                    <td><input type="checkbox" name="selected_song" value="{{ song.id }}"></td> <!-- Use song ID here -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <input type="submit" value="Submit">
-    </form>
+    <header>
+        <h1 class="section_title">Create Spotify Playlist</h1>
+        <nav class="header_nav">
+            <a href="./home ">Home</a>
+        </nav>
+    </header>
+    <main>
+        <!-- Combined Form for Playlist Name and Selecting Songs -->
+        <form id="songsForm" method="post" action="/submit-form">
+            <!-- Input for playlist name -->
+            <div>
+                <label for="playlistName">Your Playlist Name:</label>
+                <input type="text" id="playlistName" name="playlistName">
+                <input type="submit" value="Submit" class="submit">
+            </div>
+
+            <!-- Table for selecting songs -->
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Artists</th>
+                        <th>Select</th> <!-- Checkbox column -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in data %}
+                    <tr>
+                        <td>{{ song.name }}</td>
+                        <td>{{ song.artists | tojson }}</td> <!-- Assuming artists is a JSON field -->
+                        <td><input type="checkbox" name="selected_song" value="{{ song.id }}"></td> <!-- Use song ID here -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div>
+                <input type="submit" value="Submit" class="submit">
+            </div>
+        </form>
+    </main>
+    <footer>
+        <nav class="footer_nav">
+            <button><a href="#">Top</a></button>
+        </nav>
+    </footer>
 
     <!-- JavaScript to handle form submission -->
     <script>
