@@ -9,8 +9,12 @@ $(document).ready(function(){
                     songElement.find('.genres').text(`Genres: ${song.genres ? song.genres.join(', ') : 'N/A'}`);
                     songElement.find('.danceability').text(`Danceability: ${song.features.danceability || 'N/A'}`);
                     songElement.find('.energy').text(`Energy: ${song.features.energy || 'N/A'}`);
+                    songElement.find('.key').text(`Key: ${song.features.key || 'N/A'}`);
+                    songElement.find('.loudness').text(`Loudness: ${song.features.loudness || 'N/A'}`);
+                    songElement.find('.speechiness').text(`Speechiness: ${song.features.speechiness || 'N/A'}`);
                     songElement.find('.tempo').text(`Tempo: ${song.features.tempo || 'N/A'}`);
                     songElement.find('.valence').text(`Valence: ${song.features.valence || 'N/A'}`);
+
                 });
             },
             error: function(){

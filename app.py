@@ -233,7 +233,6 @@ async def get_updated_songs():
                 'features': row.features
             }
             song_data.append(song_dict)
-
     return jsonify(song_data)
 
 @app.route('/table')
@@ -241,13 +240,13 @@ async def table():
     async with db.async_session() as db.session3:
         result = await db.session3.execute(select(db.SongData))
         songs = result.scalars().all()
-        data = [{'id': song.id, 'name': song.name, 'artists': ", ".join(a["name"] for a in song.artists), 'genres': song.genres, 'features': song.features} for song in songs]
-    return await render_template('table.html', data=data)
+        data = [{'id': song.id, 'name': song.name, 'artists': ", ".join(a["name"] for a in song.artists), 'genres': ", ".join(song.genres), 'features': song.features} for song in songs]
+    return await render_template('table2.html', data=data)
  
 @app.route('/submit-form', methods=['POST'])
 async def handle_form_submission():
     form_data = await request.form
-    playlist_name = form_data.get('textInput')
+    playlist_name = form_data.get('t    extInput')
     print("Playlist Name:", playlist_name)
     return redirect(url_for('table'))  
 
@@ -270,7 +269,7 @@ async def create_playlist2():
     }
     body = {
         "name": request.args.get("name", default=playlist_name),
-        "description": request.args.get("description", default="Placeholder Description."),
+        "description": request.args.get("description", default="This playlist was created by Mood Maestro."),
         "public": False,
     }
     async with (limiter, aiohttp.ClientSession() as cs, cs.post(url, headers=headers, json=body) as response):
