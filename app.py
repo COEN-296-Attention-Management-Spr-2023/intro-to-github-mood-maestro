@@ -3,6 +3,10 @@ from datetime import datetime
 import json
 import select
 import urllib.parse
+import aioredis
+from redis import Redis
+from rq import Queue
+import tasks
 
 
 import aiohttp
@@ -19,6 +23,10 @@ user_id = ""
 app = Quart(__name__)
 app.secret_key = cfg.secret_key
 limiter = AsyncLimiter(cfg.spotify.rate_limit_tokens, cfg.spotify.rate_limit_period)
+q = Queue(connection=Redis())
+
+_url = f"redis://:@localhost:6379"
+_async_redis: aioredis.Redis = aioredis.from_url(_url)
 
 
 AUTH_URL = "https://accounts.spotify.com/authorize"
@@ -106,8 +114,47 @@ async def refresh_token():
                 session["access_token"] = data["access_token"]
                 session["expires_at"] = datetime.now().timestamp() + data["expires_in"]
 
-        return redirect("/home")
+        return redirect("/playlists")
     
+@app.route("/create-playlist")
+async def create_playlist():
+    if "access_token" not in session:
+        return redirect("/login")
+    if datetime.now().timestamp() > session["expires_at"]:
+        return redirect("/refresh-token")
+
+    async with (limiter, aiohttp.ClientSession() as cs, db.async_session() as db_session):
+        playlist_id = request.args.get("pid")
+        result = (await db_session.execute(select(db.Playlist).where(db.Playlist.id == playlist_id))).first()
+        playlist_data = json.loads(result[0].data)
+        url = f"{API_BASE_URL}users/{session['spotify_id']}/playlists"
+        headers = {
+            "Authorization": f"Bearer {session['access_token']}",
+            "Content-Type": "application/json"
+        }
+        body = {
+            "name": request.args.get("name", default="Mood Maestro Playlist"),
+            "description": request.args.get("description", default="Placeholder Description."),
+            "public": False,
+        }
+        async with (limiter, cs.post(url, headers=headers, json=body) as response):
+            data = await response.json()
+            playlist_id = data["id"]
+
+        url = f"{API_BASE_URL}playlists/{playlist_id}/tracks"
+        body = {
+            "uris": [f"spotify:track:{track_id}" for track_id in playlist_data],
+            "position": 0,
+        }
+
+        async with (limiter, cs.post(url, headers=headers, json=body) as response):
+            # new_playlist_id = await response.json()
+            # print(new_playlist_id)
+            return ("Success")
+
+async def setup():
+    await _async_redis.config_set("notify-keyspace-events", "KEA")
+
 
 async def update_database_features(songs, headers):
     async with db.async_session() as db_session2:
@@ -248,9 +295,10 @@ async def handle_form_submission():
     form_data = await request.form
     playlist_name = form_data.get('t    extInput')
     print("Playlist Name:", playlist_name)
-    return redirect(url_for('table'))  
+    return redirect(url_for('table'))
 
 @app.route("/create-playlist2", methods=["POST"])
+
 async def create_playlist2():
     if "access_token" not in session:
         return redirect("/login")
@@ -345,4 +393,44 @@ async def get_playlists():
             )
 
             return await render_template("playlists.html", playlists=info)
+
+async def process_song_moods(songs, headers):
+    async with db.async_session() as db_session:
+        for song in songs:
+            place = song["track"]["id"]
+            result = (await db_session.execute(select(db.SongData).where(db.SongData.id == place))).first()
+
+            if result[0].features is None:
+                # fetch features if not already present
+                feature_data = await get_song_features(song["track"]["id"], headers)
+                statement = (
+                    update(db.SongData)
+                    .where(db.SongData.id == place)
+                    .values(features=feature_data)
+                )
+                await db_session.execute(statement)
+                await db_session.commit()
+            else:
+                feature_data = result[0].features
+
+            # enqueue the job to rqueue
+            job_data = {
+                'song_id': place,
+                'features': feature_data
+            }
+
+        job = q.enqueue(tasks.job, songs)
+
+        psub = _async_redis.pubsub()
+        psub.ignore_subscribe_messages = True
+        await psub.psubscribe(f"*{job.id}")
+
+        async for response in psub.listen():
+            if response["type"] != "pmessage":
+                continue
+
+            status = job.get_status(refresh=True)
+            if status == "finished":
+                print(job.return_value(refresh=True))
+                break
 
