@@ -4,6 +4,8 @@ import json
 import select
 import urllib.parse
 import aioredis
+import pandas as pd 
+import worker
 from redis import Redis
 from rq import Queue
 import tasks
@@ -17,6 +19,10 @@ from config import cfg
 import db
 from sqlalchemy import select, update
 from sqlalchemy.dialects.sqlite import insert as sqlite_upsert
+
+feature_names = ['danceability', 'energy', 'valence',
+                 'loudness', 'speechiness', 'tempo', 'key']
+
 
 
 user_id = ""
@@ -172,6 +178,30 @@ async def update_database_features(songs, headers):
             await db_session2.execute(statement)
             await db_session2.commit()
 
+            result = (await db_session2.execute(select(db.SongData).where(db.SongData.id == place))).first()
+
+            try:
+                data = result[0].features
+                extracted_features = {feature: data[feature] for feature in feature_names}
+                mood_mapping = {0: 'Happy', 1: 'Sad', 2: 'Energetic', 3: 'Calm'}
+
+                input_data = pd.DataFrame([extracted_features], index = [0])
+                predicted_mood = tasks.forest_model.predict(input_data)
+                predicted_mood_string = mood_mapping[predicted_mood[0]]
+            except KeyError: 
+                predicted_mood_string = "Unknown"
+
+            statement = (
+                update(db.SongData)
+                .where(db.SongData.id == place)
+                .values(moods=predicted_mood_string)
+            )
+            await db_session2.execute(statement)
+            await db_session2.commit()
+
+
+            
+
 async def update_database_genres(songs, headers):
     async with db.async_session() as db_session3:
         for song in songs:
@@ -277,6 +307,7 @@ async def get_updated_songs():
             song_dict = {
                 'id': row.id,
                 'genres': row.genres,
+                'moods': row.moods,
                 'features': row.features
             }
             song_data.append(song_dict)
@@ -287,13 +318,13 @@ async def table():
     async with db.async_session() as db.session3:
         result = await db.session3.execute(select(db.SongData))
         songs = result.scalars().all()
-        data = [{'id': song.id, 'name': song.name, 'artists': ", ".join(a["name"] for a in song.artists), 'genres': ", ".join(song.genres), 'features': song.features} for song in songs]
+        data = [{'id': song.id, 'name': song.name, 'artists': ", ".join(a["name"] for a in song.artists), 'genres': ", ".join(song.genres),'moods': (song.moods), 'features': song.features} for song in songs]
     return await render_template('table2.html', data=data)
  
 @app.route('/submit-form', methods=['POST'])
 async def handle_form_submission():
     form_data = await request.form
-    playlist_name = form_data.get('t    extInput')
+    playlist_name = form_data.get('textInput')
     print("Playlist Name:", playlist_name)
     return redirect(url_for('table'))
 
