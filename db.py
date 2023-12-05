@@ -19,6 +19,7 @@ class SongData(Base):
     name = Column(String)
     artists = Column(JSON)
     genres = Column(JSON, default = None)
+    moods = Column(JSON, default = None)
     features = Column(JSON, default = None)
     
 

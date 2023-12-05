@@ -18,7 +18,7 @@ for dirname, _, filenames in os.walk('/kaggle/input'):
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 
-mood_file_path = '/Users/Edmund/PycharmProjects/moodMaestro/data_moods.csv'
+mood_file_path = 'static/data_moods.csv'
 mood_data = pd.read_csv(mood_file_path)
 
 feature_names = ['danceability', 'energy', 'valence',
