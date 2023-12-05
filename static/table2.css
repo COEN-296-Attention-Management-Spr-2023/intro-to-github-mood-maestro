@@ -1,0 +1,141 @@
+body {
+    background-color: #1ED760;
+    margin: 0;
+}
+
+main {
+    padding-top: 5vh;
+    background-color: #191414;
+    padding-bottom: 5vh;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+form {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.gridjs-summary > *{
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.gridjs-pagination > *{
+    margin-left: 1rem;
+    /* margin-right: 8px; */
+}
+
+.form-container {
+    margin-bottom: 1rem;
+}
+
+.form-container > * {
+    font-family: 'Times New Roman';
+
+}
+
+.form-container > label {
+    font-size: 1.2rem;
+    font-weight: 100;
+}
+
+.form-container > input {
+    height: 2rem;
+    font-weight: 400;
+    font-size: 1rem;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+.gridjs-tr {
+    color: #191414;
+}
+
+.gridjs-search {
+    font-family: 'Times New Roman';
+    height: 2rem;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    /* font-size: large; */
+    align-items: center;
+}
+
+#submitBtn {
+    font-size: 1rem;
+    padding: 0.5rem;
+    background-color: #1ED760;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+div > input{
+    margin-left: 1rem;
+}
+
+table {
+    background-color: #fff;
+    color: #191414;
+    /* font-weight: bold; */
+    border: 2px solid #191414;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+h1.section_title {
+    padding: 1rem;
+    color: #191414;
+}
+
+img{
+    width: 200px;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+nav.header_nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1ED760;
+    padding: 2vh;
+}
+
+header > nav.header_nav > a {
+    text-decoration: none;
+    color: #191414;
+    font-weight: bolder;
+}
+
+nav.footer_nav {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2vh;
+    position: fixed;
+    bottom: 0;
+}
+
+nav.footer_nav > button {
+    padding: 0.5rem;
+    background-color: #1ED760;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+nav.footer_nav > button > a {
+    text-decoration: none;
+    color: #191414;
+    font-weight: bolder;
+    border: 2px solid #1ED760;
+}

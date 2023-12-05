@@ -2,15 +2,17 @@
 <html>
 <head>
     <title>Table with Songs and Artists</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='table2.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css">
     <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.production.min.js"></script>
+    <link rel="icon" type="image/png" href="../static/MoodMaestroLogo-green.jpg" border: 50%;/>
     <style>
         #form-container {
             display: flex;
             align-items: center;
         }
 
-        #message, #error-message {
+        #message, #error-message {  
             display: none;
             margin-left: 10px;
             color: green;
@@ -22,20 +24,35 @@
     </style>
 </head>
 <body>
-    <!-- Combined Form for Playlist Name and Selecting Songs -->
-    <form id="songsForm" method="post" action="/submit-form">
-        <div id="form-container">
-            <!-- Input for playlist name -->
-            <label for="playlistName">Your Playlist Name:</label>
-            <input type="text" id="playlistName" name="playlistName">
-            <input type="submit" value="Submit" id="submitBtn">
-            <div id="message">Your playlist has been created!</div>
-            <div id="error-message">Please enter a name for your playlist.</div>
-        </div>
-        
-        <!-- Table for selecting songs -->
-        <div id="songsTable"></div>
-    </form>
+    <header>
+        <h1 class="section_title">Create Playlist</h1>
+        <nav class="header_nav">
+            <a href="./home ">Home</a>
+        </nav>
+    </header>
+    
+    <main>
+        <!-- Combined Form for Playlist Name and Selecting Songs -->
+        <form id="songsForm" method="post" action="/submit-form">
+            <div id="form-container" class="form-container">
+                <!-- Input for playlist name -->
+                <label for="playlistName">Your Playlist Name:</label>
+                <input type="text" id="playlistName" name="playlistName">
+                <input type="submit" value="Submit" id="submitBtn">
+                <div id="message">Your playlist has been created!</div>
+                <div id="error-message">Please enter a name for your playlist.</div>
+            </div>
+            
+            <!-- Table for selecting songs -->
+            <div id="songsTable"></div>
+        </form>
+    </main>
+
+    <footer>
+        <nav class="footer_nav">
+            <button><a href="#">Top</a></button>
+        </nav>
+    </footer>
 
     <!-- JavaScript to initialize Grid.js and handle form submission -->
     <script>
